@@ -1,0 +1,121 @@
+<html>
+	<head>
+		<title>Jet&rsquo;s Big Breakfast</title>
+		<script src="js/jquery-2.1.1.min.js"></script>
+
+		<script>
+
+			$( document ).ready(function() {
+
+				var canvasPadding = 50;
+				var totalScore = 0;
+				var foodServed = 0;
+				
+				function getRandomInt(min, max) {
+					return Math.floor(Math.random() * (max - min + 1)) + min;
+				}
+
+				function getRandomXPos(foodWidth) {
+					return getRandomInt(canvasPadding, $(window).width() - (canvasPadding*2) - foodWidth);
+				}
+
+				function getRandomYPos(foodHeight) {
+					return getRandomInt(canvasPadding, $(window).height() - (canvasPadding*2) - foodHeight);
+				}
+
+				function playCrunchSound() {
+					$("<audio autoplay='autoplay' style='display:none;' controls='controls'><source src='sfx/crunch.mp3' /></audio>").appendTo('body');
+				}
+
+				function serveFood() {
+
+					var foodId = foodServed;
+					foodServed++;
+
+					$("body").append('<div class="food" id="food' + foodId + '"></div>');
+
+					var foodDiv = $('#food' + foodId);
+
+					foodDiv.css({top: getRandomYPos(foodDiv.height()), left: getRandomXPos(foodDiv.width())});
+					foodDiv.css({transform: "scale(1,1)"});
+
+					console.log('foodId: ' + foodId);
+					console.log('x: ' + foodDiv.position().left);
+					console.log('y: ' + foodDiv.position().top);
+
+					foodDiv.click(function() {
+						$(this).css({transform: "scale(0,0)"});
+						playCrunchSound();
+						updateScore(1);
+					});
+
+					var whatever = foodDiv.setTimeout(clearFood(foodId), 2000);
+				}
+
+				function clearFood(foodId) {
+					console.log('Clearing food ' + foodId);
+				}
+
+				function updateScore(score) {
+					totalScore += score;
+					$('.totalScore').html(totalScore);
+					console.log(totalScore);
+				}
+
+				var intervalID = window.setInterval(serveFood, 5000);
+
+			});
+
+
+		</script>
+
+		<style type="text/css">
+
+			body {
+				background-image: url('img/tablecloth-blue.png');
+			}
+
+			.food {
+				background: red;
+				border-radius: 100%;
+				display: block;
+				height: 100px;
+				position: absolute;
+				width: 100px;
+
+				transform: scale(0,0);
+
+				transition: transform 0.3s;
+
+			}
+
+			.totalScore {
+				background-color: white;
+				border-radius: 50%;
+				border: 4px solid #ccc;
+				cursor: default;
+				font-family: "Futura-Medium";
+				font-size: 72px;
+				height: 120px;
+				left: 50%;
+				line-height: 120px;
+				margin-left: -60px;
+				margin-top: -60px;
+				pointer-events: none;
+				position: absolute;
+				text-align: center;
+				top: 50%;
+				width: 120px;
+			}
+
+		</style>
+
+	</head>
+	<body>
+
+		<audio id="crunchSound" src="sfx/crunch.mp3" preload="true"></audio>
+
+		<div class="totalScore">0</div>
+
+	</body>
+<html>
