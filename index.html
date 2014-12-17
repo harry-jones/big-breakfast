@@ -1,6 +1,11 @@
 <html>
 	<head>
 		<title>Jet&rsquo;s Big Breakfast</title>
+
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1.0, user-scalable=no">
+
 		<script src="js/jquery-2.1.1.min.js"></script>
 
 		<script>
@@ -37,14 +42,14 @@
 					var foodDiv = $('#food' + foodId);
 
 					foodDiv.css({top: getRandomYPos(foodDiv.height()), left: getRandomXPos(foodDiv.width())});
-					foodDiv.css({transform: "scale(1,1)"});
+					foodDiv.css({'-webkit-transform': 'scale(1,1)'});
 
 					console.log('foodId: ' + foodId);
 					console.log('x: ' + foodDiv.position().left);
 					console.log('y: ' + foodDiv.position().top);
 
-					foodDiv.click(function() {
-						$(this).css({transform: "scale(0,0)"});
+					foodDiv.bind('touchstart', function() {
+						$(this).css({'-webkit-transform': 'scale(0,0)'});
 						playCrunchSound();
 						updateScore(1);
 					});
@@ -83,9 +88,9 @@
 				position: absolute;
 				width: 100px;
 
-				transform: scale(0,0);
+				-webkit-transform: scale(0,0);
 
-				transition: transform 0.3s;
+				transition: -webkit-transform 0.3s;
 
 			}
 
@@ -113,7 +118,7 @@
 	</head>
 	<body>
 
-		<audio id="crunchSound" src="sfx/crunch.mp3" preload="true"></audio>
+		<audio id="crunchSound" src="sfx/crunch.mp3" preload="true" autoplay="true"></audio>
 
 		<div class="totalScore">0</div>
 
